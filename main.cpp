@@ -12,8 +12,18 @@ enum class CLState { none, tag, text };
 
 int main( int argc, char* argv[] )
 {
+    if ( argc != 2 ) {
+        std::cout << "Usage: ./xmlpretty filename.xml";
+        return -1;
+    }
+
     std::string fname = argv[1];
     FILE* fff = fopen( fname.c_str(), "r" );
+
+    if ( !fff ) {
+        Log().E( std::format( "Could not open input file for writing: {}", fname ) );
+        return -1;
+    }
 
     KSFileAuto fffauto( fff );
 
@@ -24,6 +34,7 @@ int main( int argc, char* argv[] )
     std::string text;
     std::string out;
     bool tagWasOpened = false;
+    int fpos = 0;
 
     size_t sz = 0;
 
@@ -31,6 +42,7 @@ int main( int argc, char* argv[] )
         sz = fread( buf, 1, sizeof( buf ), fff );
 
         for ( size_t i = 0; i < sz; ++i ) {
+            fpos++;
             char chr = buf[i];
             switch ( chr ) {
                 case '\n':
@@ -39,7 +51,7 @@ int main( int argc, char* argv[] )
                 break;
                 case '<':
                     if ( state == CLState::tag ) {
-                        Log().E( std::format( "found < when in tag mode" ) );
+                        Log().E( std::format( "symbol '<' is not expected. filepos {} tagname {}", fpos, tagname ) );
                         return -1;
                     }
                     state = CLState::tag;
@@ -48,7 +60,7 @@ int main( int argc, char* argv[] )
                 case '>':
                 {
                     if ( state == CLState::text ) {
-                        Log().E( std::format( "found > when in text mode" ) );
+                        Log().E( std::format( "symbol '>' is not expected at position {}, tagname {}", fpos, tagname ) );
                         return -1;
                     }
                     bool startTag = (tagname[0] != '/' );
@@ -85,9 +97,14 @@ int main( int argc, char* argv[] )
         }
     } while (sz);
 
-    fname += ".new";
+    fname += ".pretty.xml";
 
     FILE* fffw = fopen ( fname.c_str(), "w" );
+
+    if ( !fffw ) {
+        Log().E( std::format( "Could not open destination file for writing: {}", fname ) );
+        return -1;
+    }
 
     KSFileAuto fffwauto( fffw );
 
@@ -95,3 +112,4 @@ int main( int argc, char* argv[] )
 
     return 0;
 }
+
