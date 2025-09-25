@@ -11,6 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="test.xml" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -30,8 +31,21 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-std=c++20" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="../CommonCpp/KSDateTime/KSDateTime.cpp" />
+		<Unit filename="../CommonCpp/KSDateTime/KSDateTime.h" />
+		<Unit filename="../CommonCpp/KSEventLog/KSEventLog.cpp" />
+		<Unit filename="../CommonCpp/KSEventLog/KSEventLog.h" />
+		<Unit filename="../CommonCpp/KSUtils/KSJsonUtil.h" />
+		<Unit filename="../CommonCpp/KSUtils/KSMemUtils.h" />
+		<Unit filename="../CommonCpp/KSUtils/KSUtil.cpp" />
+		<Unit filename="../CommonCpp/KSUtils/KSUtil.h" />
+		<Unit filename="../CommonCpp/KSUtils/KSUtil20.cpp" />
+		<Unit filename="../CommonCpp/KSUtils/KSUtil20.h" />
+		<Unit filename="../CommonCpp/Platform/Linux/Platform.cpp" />
+		<Unit filename="../CommonCpp/strfmt.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions />
 	</Project>

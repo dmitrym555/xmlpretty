@@ -9,6 +9,8 @@
 
 enum class CLState { none, tag, text };
 
+const int tabSize=4;
+
 
 int main( int argc, char* argv[] )
 {
@@ -27,7 +29,7 @@ int main( int argc, char* argv[] )
 
     KSFileAuto fffauto( fff );
 
-    char buf[4096];
+    char buf[1024*1024];
     int level = 0;
     CLState state = CLState::none;
     std::string tagname;
@@ -66,7 +68,7 @@ int main( int argc, char* argv[] )
                     bool startTag = (tagname[0] != '/' );
 
                     if ( startTag ) {
-                        out += std::format( "\n{}<{}>", std::string( std::max(0,level) * 4, ' ' ),  tagname );
+                        out += std::format( "\n{}<{}>", std::string( std::max(0,level) * tabSize, ' ' ),  tagname );
                         level += 1;
                         state = CLState::text;
                         text = "";
@@ -79,7 +81,7 @@ int main( int argc, char* argv[] )
                             out += std::format( "{}<{}>", text, tagname );
                         }
                         else {
-                            out += std::format( "\n{}<{}>", std::string( std::max(0,level) * 4, ' ' ),  tagname );
+                            out += std::format( "\n{}<{}>", std::string( std::max(0,level) * tabSize, ' ' ),  tagname );
                         }
                         tagWasOpened = false;
                     }
@@ -112,4 +114,7 @@ int main( int argc, char* argv[] )
 
     return 0;
 }
+
+
+
 
