@@ -39,6 +39,7 @@ int main( int argc, char* argv[] )
     int fpos = 0;
 
     size_t sz = 0;
+    int lineNo = 0;
 
     do {
         sz = fread( buf, 1, sizeof( buf ), fff );
@@ -66,9 +67,14 @@ int main( int argc, char* argv[] )
                         return -1;
                     }
                     bool startTag = (tagname[0] != '/' );
+                    char lastCh = *(tagname.end() - 1);
+                    bool singleTag = ( (lastCh == '/') || ( lastCh == '?') );
 
+                    tagWasOpened = false;
+                    state = CLState::none;
+                    std::string addstr;
                     if ( startTag ) {
-                        out += std::format( "\n{}<{}>", std::string( std::max(0,level) * tabSize, ' ' ),  tagname );
+                        addstr = std::format( "{}{}<{}>", lineNo? "\n":"", std::string( std::max(0,level) * tabSize, ' ' ),  tagname );
                         level += 1;
                         state = CLState::text;
                         text = "";
@@ -76,15 +82,18 @@ int main( int argc, char* argv[] )
                     }
                     else {
                         level -= 1;
-                        state = CLState::none;
                         if ( tagWasOpened ) {
-                            out += std::format( "{}<{}>", text, tagname );
+                            addstr = std::format( "{}<{}>", text, tagname );
                         }
                         else {
-                            out += std::format( "\n{}<{}>", std::string( std::max(0,level) * tabSize, ' ' ),  tagname );
+                            addstr = std::format( "\n{}<{}>", std::string( std::max(0,level) * tabSize, ' ' ),  tagname );
                         }
-                        tagWasOpened = false;
                     }
+                    if ( singleTag ) {
+                        level -= 1;
+                    }
+                    out += addstr;
+                    lineNo++;
                 }
                 break;
                 default:
@@ -114,6 +123,7 @@ int main( int argc, char* argv[] )
 
     return 0;
 }
+
 
 
 
