@@ -70,7 +70,6 @@ int main( int argc, char* argv[] )
                     char lastCh = *(tagname.end() - 1);
                     bool singleTag = ( (lastCh == '/') || ( lastCh == '?') );
 
-                    tagWasOpened = false;
                     state = CLState::none;
                     std::string addstr;
                     if ( startTag ) {
@@ -84,6 +83,7 @@ int main( int argc, char* argv[] )
                         level -= 1;
                         if ( tagWasOpened ) {
                             addstr = std::format( "{}<{}>", text, tagname );
+                            tagWasOpened = false;
                         }
                         else {
                             addstr = std::format( "\n{}<{}>", std::string( std::max(0,level) * tabSize, ' ' ),  tagname );
