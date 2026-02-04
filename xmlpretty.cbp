@@ -34,6 +34,10 @@
 			<Add option="-std=c++20" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Linker>
+			<Add option="-static-libstdc++" />
+			<Add option="-static-libgcc" />
+		</Linker>
 		<Unit filename="../CommonCpp/KSDateTime/KSDateTime.cpp" />
 		<Unit filename="../CommonCpp/KSDateTime/KSDateTime.h" />
 		<Unit filename="../CommonCpp/KSEventLog/KSEventLog.cpp" />

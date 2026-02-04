@@ -5,6 +5,9 @@
 #include "../CommonCpp/KSUtils/KSUtil.h"
 #include "../CommonCpp/KSEventLog/KSEventLog.h"
 
+#include "../CommonCpp/KSConfParser/KSConf.h"
+
+
 #include <format>
 
 enum class CLState { none, tag, text };
@@ -14,10 +17,12 @@ const int tabSize=4;
 
 int main( int argc, char* argv[] )
 {
-    if ( argc != 2 ) {
-        std::cout << "Usage: ./xmlpretty filename.xml";
+    if ( argc < 2 ) {
+        std::cout << "Usage: ./xmlpretty filename.xml\n";
         return -1;
     }
+
+    g_conf.init(argc, argv );
 
     std::string fname = argv[1];
     FILE* fff = fopen( fname.c_str(), "r" );
@@ -121,8 +126,12 @@ int main( int argc, char* argv[] )
 
     fwrite( out.c_str(), 1, out.length(), fffw );
 
+    close( fffwauto.m_file );
+
     return 0;
 }
+
+
 
 
 
