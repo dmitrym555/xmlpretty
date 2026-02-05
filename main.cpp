@@ -113,9 +113,13 @@ int main( int argc, char* argv[] )
         }
     } while (sz);
 
-    fname += ".pretty.xml";
+    fffauto.fileClose();
 
-    FILE* fffw = fopen ( fname.c_str(), "w" );
+    if ( g_conf.get("force") != "1" ) {
+        fname += ".pretty.xml";
+    }
+
+    FILE* fffw = fopen( fname.c_str(), "w" );
 
     if ( !fffw ) {
         Log().E( std::format( "Could not open destination file for writing: {}", fname ) );
@@ -126,7 +130,7 @@ int main( int argc, char* argv[] )
 
     fwrite( out.c_str(), 1, out.length(), fffw );
 
-    close( fffwauto.m_file );
+    fffwauto.fileClose();
 
     return 0;
 }
