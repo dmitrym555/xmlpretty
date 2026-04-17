@@ -37,6 +37,7 @@
 		<Linker>
 			<Add option="-static-libstdc++" />
 			<Add option="-static-libgcc" />
+			<Add option="-static" />
 		</Linker>
 		<Unit filename="../CommonCpp/KSConfParser/KSConf.cpp" />
 		<Unit filename="../CommonCpp/KSConfParser/KSConf.h" />
